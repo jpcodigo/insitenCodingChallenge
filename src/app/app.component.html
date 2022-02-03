@@ -1,0 +1,31 @@
+<main>
+  <table>
+    <tr *ngFor="let company of companies; let i = index">
+      <td><input type="checkbox"></td>
+      <td (click)="setStatusEdit(i)">
+        <span *ngIf="!company.canEdit.status">{{company.status}}></span>
+        <input *ngIf="company.canEdit.status" type="text" class="form-control"  />
+      </td>
+      <td (click)="setInfoEdit(i)">
+        <span *ngIf="!company.canEdit.info">{{company.info}}></span>
+        <input *ngIf="company.canEdit.info" type="text" class="form-control"  />
+      </td>
+      <td (click)="setNameEdit(i)">
+        <span *ngIf="!company.canEdit.name">{{company.contacts.name}}></span>
+        <input *ngIf="company.canEdit.name" type="text" class="form-control"  />
+      </td>
+      <td (click)="setNumberEdit(i)">
+        <span *ngIf="!company.canEdit.number">{{company.contacts.number}}></span>
+        <input *ngIf="company.canEdit.number" type="text" class="form-control"  />
+      </td>
+      <td (click)="setEmailEdit(i)">
+        <span *ngIf="!company.canEdit.email">{{company.contact.email}}></span>
+        <input *ngIf="company.canEdit.email" type="text" class="form-control"  />
+      </td>
+      <td (click)="setPerformanceEdit(i)">
+        <span *ngIf="!company.canEdit.performance">{{company.performance}}></span>
+        <input *ngIf="company.canEdit.performance" type="text" class="form-control"  />
+      </td>
+    </tr>
+  </table>
+</main>

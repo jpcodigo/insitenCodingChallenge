@@ -13,7 +13,7 @@
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-areas: "company company company company"
+  grid-template-areas: "company company company drag"
                        "status contact contact contact"
                        "info info performance buttons"
                        "info info performance buttons";
@@ -22,7 +22,7 @@
     max-width: 100%;
   }
 
-  &__partition {
+  &__section {
     background-color: white;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -37,6 +37,10 @@
 
     &--company {
       grid-area: company;
+    }
+    
+    &--drag {
+      grid-area: drag;
     }
 
     &--status {

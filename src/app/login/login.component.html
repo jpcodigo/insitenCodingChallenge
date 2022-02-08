@@ -1,1 +1,23 @@
-<p>login works!</p>
+<form id="login" #f="ngForm" (ngSubmit)="logIn(f)">
+  <input
+    id="loginEmail"
+    name="email"
+    type="email"
+    placeholder="Email"
+    ngModel
+    required
+  >
+  <input
+    id="loginPassword"
+    name="password"
+    type="password"
+    placeholder="Password"
+    ngModel
+    required
+  >
+  <button
+    id="loginButton"
+    type="submit"
+    [disabled]="f.invalid"
+  >Log in</button>
+</form>

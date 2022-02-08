@@ -1,3 +1,4 @@
+import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Company } from './company';
@@ -5,7 +6,20 @@ import { Company } from './company';
 @Component({
   selector: 'app-company-list',
   templateUrl: './company-list.component.html',
-  styleUrls: ['./company-list.component.scss']
+  styleUrls: ['./company-list.component.scss'],
+  animations: [
+    trigger('sectionAnimations', [
+      transition(':enter', [
+        query('.card__partition', [
+          style({opacity: 0, transform: 'translateY(-100px)'}),
+          stagger(30, [
+            animate('500ms cubic-bezier(0.35, 0, 0.25, 1)',
+            style({ opacity: 1, transform: 'none' }))
+          ])
+        ])
+      ])
+    ]),
+  ],
 })
 export class CompanyListComponent implements OnInit {
   companies: Company[] = [];

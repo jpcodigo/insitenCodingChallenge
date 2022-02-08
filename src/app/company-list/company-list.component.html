@@ -2,8 +2,15 @@
   <button (click)="popup = true">Add New Company</button>
 </div>
 <div id="container">
-  <div *ngFor="let company of companies; let i = index" class="card">
-    <div class="card__partition card__partition--company" (click)="setCanEdit(i, $event)">
+  <div 
+    *ngFor="let company of companies; let i = index"
+    class="card"
+    @sectionAnimations
+  >
+    <div class="card__section card__section--drag">
+      <h2>X</h2>
+    </div>
+    <div class="card__section card__section--company" (click)="setCanEdit(i, $event)">
       <span id="companyName" *ngIf="!company.canEdit.companyName">
         <h2>{{ company.companyName }}</h2>
       </span>
@@ -14,7 +21,7 @@
         id="companyNameInput"
       />
     </div>
-    <div class="card__partition card__partition--status" (click)="setCanEdit(i, $event)">
+    <div class="card__section card__section--status" (click)="setCanEdit(i, $event)">
       <h3>Status</h3>
       <span id="status" *ngIf="!company.canEdit.status">
         {{ company.status.selectedValue }}
@@ -25,14 +32,14 @@
         </option>
       </select>
     </div>
-    <div class="card__partition card__partition--info" (click)="setCanEdit(i, $event)">
+    <div class="card__section card__section--info" (click)="setCanEdit(i, $event)">
       <h3>Company Info</h3>
       <span id="info" *ngIf="!company.canEdit.info">
         {{ company.info }}
       </span>
       <textarea *ngIf="company.canEdit.info || !company.info" [(ngModel)]="company.info"></textarea>
     </div>
-    <div class="card__partition card__partition--contact" (click)="setCanEdit(i, $event)">
+    <div class="card__section card__section--contact" (click)="setCanEdit(i, $event)">
       <h3>Key Contacts</h3>
       <input 
           *ngIf="!company.contacts[0]"
@@ -51,14 +58,14 @@
       </div>
       <button (click)="addContact(i)">Add Contact</button>
     </div>
-    <div class="card__partition card__partition--performance" (click)="setCanEdit(i, $event)">
+    <div class="card__section card__section--performance" (click)="setCanEdit(i, $event)">
       <h3>Financial Performance</h3>
       <span id="performance" *ngIf="!company.canEdit.performance">
         {{ company.financial_performance }}
       </span>
       <textarea *ngIf="company.canEdit.performance || !company.financial_performance" [(ngModel)]="company.financial_performance"></textarea>
     </div>
-    <div class="card__partition card__partition--buttons">
+    <div class="card__section card__section--buttons">
       <button
         id="edit"
         (click)="setCanEdit(i, $event)"

@@ -6,7 +6,7 @@ import { CompanyListComponent } from './company-list/company-list.component';
 
 const routes: Routes = [
     { path: '', component: LoginComponent },
-    { path: 'companies', component: CompanyListComponent, canLoad: [AuthGuard] },
+    { path: 'companies', component: CompanyListComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

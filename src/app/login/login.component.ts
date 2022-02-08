@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
 
@@ -7,13 +7,9 @@ import { AuthService } from './auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   constructor(private readonly authService: AuthService) {}
-
-  ngOnInit(): void {
-    alert('Email = email@email.com, password = password');
-  }
 
   logIn(form: NgForm) {
     this.authService.logIn(form.value.email, form.value.password);

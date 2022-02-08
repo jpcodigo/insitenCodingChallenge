@@ -1,19 +1,22 @@
 <div class="add-new">
-  <button (click)="popup = true">Add New Company</button>
+  <button (click)="popup = true" style="margin-right: 10px;">Add New Company</button>
+  <button (click)="logOut()">Log Out</button>
 </div>
-<div id="container">
+<div id="container" cdkDropList (cdkDropListDropped)="drop($event)">
   <div 
     *ngFor="let company of companies; let i = index"
     class="card"
     @sectionAnimations
+    cdkDrag
   >
-    <div class="card__section card__section--drag">
-      <h2>X</h2>
+  <div class="drag-placeholder" *cdkDragPlaceholder></div>
+    <div class="card__section card__section--drag" cdkDragHandle>
+      <img src="https://img.icons8.com/external-tal-revivo-bold-tal-revivo/48/000000/external-hamburger-menu-bar-with-parallel-navigation-button-basic-bold-tal-revivo.png"/>
     </div>
     <div class="card__section card__section--company" (click)="setCanEdit(i, $event)">
-      <span id="companyName" *ngIf="!company.canEdit.companyName">
-        <h2>{{ company.companyName }}</h2>
-      </span>
+      <h2 id="companyName" *ngIf="!company.canEdit.companyName">
+        {{ company.companyName }}
+      </h2>
       <input 
         *ngIf="company.canEdit.companyName"
         type="text"
@@ -41,11 +44,6 @@
     </div>
     <div class="card__section card__section--contact" (click)="setCanEdit(i, $event)">
       <h3>Key Contacts</h3>
-      <input 
-          *ngIf="!company.contacts[0]"
-          type="text"
-          [(ngModel)]="company.contacts[0]"
-        />
       <div class="contact" *ngFor="let contact of company.contacts; let j = index; trackBy:customTrackBy">
         <span id="contact" *ngIf="!company.canEdit.contact">
           {{ company.contacts[j] }}
@@ -84,12 +82,13 @@
 </div>
 
 
+<!-- I really should put this in a child component, but it seems like overkill for such, plus I need to turn this in soon -->
 <div class="popup" id="popup" *ngIf="popup">
   <div class="popup__content">
     <button (click)="popup = false" class="popup__close">&times;</button>
     <form #f="ngForm" (ngSubmit)="addNewCompany(f)">
       <div class="field">
-        <label for="companyName">Company Name</label>
+        <label for="companyName">*Company Name</label>
         <input 
           name="companyName"
           type="text"
@@ -98,7 +97,7 @@
         />
       </div>
       <div class="field">
-        <label for="companyStatus">Status</label>
+        <label for="companyStatus">*Status</label>
         <select
           name="companyStatus"
           required
@@ -113,7 +112,7 @@
         </select>
       </div>
       <div class="field">
-        <label for="companyInfo">Info</label>
+        <label for="companyInfo">*Info</label>
         <textarea
           name="companyInfo"
           required
@@ -121,17 +120,31 @@
         ></textarea>
       </div>
       <div class="field">
-        <label for="contact">Contact</label>
-        <input 
-          type="text"
-          name="contact"
-          placeholder="Name, number, email"
-          required
-          ngModel
-        />
+        <label for="contactOne">*Contacts (1 required)</label>
+        <div class="field--contacts">
+          <input 
+            type="text"
+            name="contactOne"
+            placeholder="Name, number, email"
+            required
+            ngModel
+          />
+          <input 
+            type="text"
+            name="contactTwo"
+            placeholder="Name, number, email"
+            ngModel
+          />
+          <input 
+            type="text"
+            name="contactThree"
+            placeholder="Name, number, email"
+            ngModel
+          />
+        </div>
       </div>
       <div class="field">
-        <label for="companyPerformance">Financial Performance</label>
+        <label for="companyPerformance">*Financial Performance</label>
         <textarea
           name="companyPerformance"
           required

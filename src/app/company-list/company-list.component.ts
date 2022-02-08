@@ -1,6 +1,8 @@
-import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { AuthService } from '../login/auth.service';
 import { Company } from './company';
 
 @Component({
@@ -10,9 +12,9 @@ import { Company } from './company';
   animations: [
     trigger('sectionAnimations', [
       transition(':enter', [
-        query('.card__partition', [
+        query('.card__section', [
           style({opacity: 0, transform: 'translateY(-100px)'}),
-          stagger(30, [
+          stagger(150, [
             animate('500ms cubic-bezier(0.35, 0, 0.25, 1)',
             style({ opacity: 1, transform: 'none' }))
           ])
@@ -25,20 +27,18 @@ export class CompanyListComponent implements OnInit {
   companies: Company[] = [];
   popup: boolean = false;
 
-  constructor() {}
+  constructor(private readonly authService: AuthService) {}
 
   ngOnInit(): void {
-    this.companies.push(new Company('Arrow', 'Researching', 'lorem', 'good', 'John Doe, 404-404-9999, email@email.com', 'Jane Doe, 404-404-9999, email@email.com'));
-    this.companies.push(new Company('Other', 'Researching', 'lorem', 'good', 'John Doe, 404-404-9999, email@email.com', 'Jane Doe, 404-404-9999, email@email.com'));
-    this.companies.push(new Company('New', 'Researching', 'lorem', 'good', 'John Doe, 404-404-9999, email@email.com', 'Jane Doe, 404-404-9999, email@email.com'));
+    this.companies.push(new Company('Some Company', 'Researching', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'John Doe, 404-404-9999, email@email.com', 'Jane Doe, 404-404-9999, email@email.com'));
   }
 
   setCanEdit(i: number, e: Event) {
-    let target = e.target as HTMLSpanElement | HTMLButtonElement;
+    let target = e.target as HTMLSpanElement | HTMLButtonElement | HTMLHeadingElement;
     let canEdit = this.companies[i].canEdit;
     
     if (target.id === 'companyName') {
-      this.companies.forEach(c => c.canEdit.info = false)
+      this.companies.forEach(c => c.canEdit.companyName = false)
       canEdit.companyName = true
     }
     
@@ -94,13 +94,19 @@ export class CompanyListComponent implements OnInit {
   }
 
   addNewCompany(form: NgForm) {
-    this.companies.push(new Company(
+    const newCompany = new Company(
       form.value.companyName,
       form.value.companyStatus,
       form.value.companyInfo,
       form.value.companyPerformance,
-      form.value.contact
-    ));
+      form.value.contactOne,
+      form.value.contactTwo,
+      form.value.contactThree,
+    );
+    newCompany.contacts = newCompany.contacts.filter(element => {
+      return element !== '';
+    });
+    this.companies.push(newCompany);
     this.popup = false;
   }
 
@@ -115,5 +121,15 @@ export class CompanyListComponent implements OnInit {
 
   customTrackBy(index: number): any {
     return index;
+  }
+
+  logOut() {
+    this.authService.logout();
+  }
+
+  // Drag and drop functionality
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.companies, event.previousIndex, event.currentIndex);
   }
 }
